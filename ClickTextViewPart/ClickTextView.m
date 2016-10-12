@@ -44,7 +44,10 @@
     // 设置的text的相关属性，都添加到 content 中
     self.content = [[NSMutableAttributedString alloc] initWithString:text];
     [self.content addAttribute:NSFontAttributeName value:self.font range:NSMakeRange(0, text.length)];
-    [self.content addAttribute:NSForegroundColorAttributeName value:self.textColor range:NSMakeRange(0, text.length)];
+    if(self.textColor){
+        [self.content addAttribute:NSForegroundColorAttributeName value:self.textColor range:NSMakeRange(0, text.length)];
+    }
+    
 }
 
 
