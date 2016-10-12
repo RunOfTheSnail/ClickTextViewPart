@@ -18,12 +18,12 @@
 @implementation ClickTextView
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -33,7 +33,7 @@
         [self setEditable:NO];
         // 必须实现 ScrollView 禁止滚动才行
         [self setScrollEnabled:NO];
-
+        
     }
     return self;
 }
@@ -90,12 +90,15 @@
         if (rect.size.width == 0 || rect.size.height == 0) {
             continue;
         }
-        
-        NSLog(@"rects = %@",NSStringFromCGRect(rect));
+        // 将有用的信息打包<存放到字典中>存储到数组中
         NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+        // 存储文字对应的frame，一段文字可能会有两个甚至多个frame，考虑到文字换行问题
         [dic setObject:[NSValue valueWithCGRect:rect] forKey:@"rect"];
+        // 存储下划线对应的文字
         [dic setObject:[self.text substringWithRange:underlineTextRange] forKey:@"content"];
+        // 存储相应的回调的block
         [dic setObject:block forKey:@"block"];
+        // 存储对应的点击效果背景颜色
         [dic setValue:coverColor forKey:@"coverColor"];
         [selectedArray addObject:dic];
     }
@@ -112,10 +115,10 @@
     
     // 触摸点
     CGPoint point = [touch locationInView:self];
-    NSLog(@"点击的当前的点  %@",NSStringFromCGPoint(point));
+    // 通过一个触摸点，查询点击的是不是在下划线对应的文字的frame
     NSArray *selectedArray = [self touchingSpecialWithPoint:point];
     for (NSDictionary *dic in selectedArray) {
-        if(dic){
+        if(dic && dic[@"coverColor"]){
             UIView *cover = [[UIView alloc] init];
             cover.backgroundColor = dic[@"coverColor"];
             cover.frame = [dic[@"rect"] CGRectValue];
@@ -136,23 +139,19 @@
             block(dic[@"content"]);
         }
     }
-
 }
 
 - (NSArray *)touchingSpecialWithPoint:(CGPoint)point
 {
-
     // 从所有的特殊的范围中找到点击的那个点
     for (NSArray *selecedArray in self.rectsArray) {
         for (NSDictionary *dic in selecedArray) {
-            NSLog(@"myRect === %@",dic[@"rect"]);
             CGRect myRect = [dic[@"rect"] CGRectValue];
             if(CGRectContainsPoint(myRect, point) ){
                 return selecedArray;
             }
         }
     }
-    
     return nil;
 }
 /** 点击结束的时候 */

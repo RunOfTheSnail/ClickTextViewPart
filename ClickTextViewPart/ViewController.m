@@ -21,11 +21,12 @@
     ClickTextView *clickTextView = [[ClickTextView alloc] initWithFrame:CGRectMake(50, 50, 300, 300)];
     [self.view addSubview:clickTextView];
     
+    // 方便测试，设置textView的边框已经背景
     clickTextView.backgroundColor = [UIColor cyanColor];
     clickTextView.layer.borderWidth = 1;
     clickTextView.layer.borderColor = [UIColor redColor].CGColor;
-    clickTextView.font = [UIFont systemFontOfSize:40];
-    clickTextView.textColor = [UIColor redColor];
+    clickTextView.font = [UIFont systemFontOfSize:30];
+//    clickTextView.textColor = [UIColor redColor];
     
     
     NSString *content = @"1234567890承诺书都差不多岁尺布斗粟CBD死UC收不到催上半场低俗";
